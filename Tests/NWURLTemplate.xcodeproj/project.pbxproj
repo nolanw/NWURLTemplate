@@ -7,12 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1CB5DB1118EFA475008FBFA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF1907418EDF15100B2A5D7 /* Foundation.framework */; };
 		1CB5DB1418EFA475008FBFA5 /* Profiler.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CB5DB1318EFA475008FBFA5 /* Profiler.m */; };
 		1CB5DB1C18EFA505008FBFA5 /* NWURLTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CF1906A18EDEEE900B2A5D7 /* NWURLTemplate.m */; };
 		1CF1907318EDF15100B2A5D7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF1907218EDF15100B2A5D7 /* XCTest.framework */; };
-		1CF1907518EDF15100B2A5D7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF1907418EDF15100B2A5D7 /* Foundation.framework */; };
-		1CF1907718EDF15100B2A5D7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF1907618EDF15100B2A5D7 /* UIKit.framework */; };
 		1CF1908418EDF17100B2A5D7 /* NWURLTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CF1906A18EDEEE900B2A5D7 /* NWURLTemplate.m */; };
 		1CF1908A18EDF19000B2A5D7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF1907218EDF15100B2A5D7 /* XCTest.framework */; };
 		1CF1909C18EDF83900B2A5D7 /* NWURLTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CF1906A18EDEEE900B2A5D7 /* NWURLTemplate.m */; };
@@ -43,8 +40,6 @@
 		1CF1906A18EDEEE900B2A5D7 /* NWURLTemplate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NWURLTemplate.m; path = ../NWURLTemplate.m; sourceTree = "<group>"; };
 		1CF1906F18EDF15100B2A5D7 /* Tests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CF1907218EDF15100B2A5D7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		1CF1907418EDF15100B2A5D7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		1CF1907618EDF15100B2A5D7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		1CF1908918EDF19000B2A5D7 /* Tests-OSX.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests-OSX.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CF1909A18EDF24100B2A5D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1CF1909B18EDF24100B2A5D7 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
@@ -58,7 +53,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1CB5DB1118EFA475008FBFA5 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,8 +61,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1CF1907318EDF15100B2A5D7 /* XCTest.framework in Frameworks */,
-				1CF1907718EDF15100B2A5D7 /* UIKit.framework in Frameworks */,
-				1CF1907518EDF15100B2A5D7 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,8 +100,6 @@
 			isa = PBXGroup;
 			children = (
 				1CF1907218EDF15100B2A5D7 /* XCTest.framework */,
-				1CF1907418EDF15100B2A5D7 /* Foundation.framework */,
-				1CF1907618EDF15100B2A5D7 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -306,7 +296,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -346,7 +335,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -357,6 +345,8 @@
 			buildSettings = {
 				CLANG_STATIC_ANALYZER_MODE = deep;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				WARNING_CFLAGS = (
 					"-Wall",
@@ -370,6 +360,8 @@
 			buildSettings = {
 				CLANG_STATIC_ANALYZER_MODE = deep;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				WARNING_CFLAGS = (
 					"-Wall",
@@ -417,7 +409,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Support/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -458,7 +449,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Support/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -472,7 +462,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -505,7 +494,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Support/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -519,7 +507,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -547,7 +534,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Support/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = xctest;
@@ -564,6 +550,7 @@
 				1CB5DB1B18EFA475008FBFA5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1CF1906618EDEEB700B2A5D7 /* Build configuration list for PBXProject "NWURLTemplate" */ = {
 			isa = XCConfigurationList;

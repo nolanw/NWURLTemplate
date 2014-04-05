@@ -3,3 +3,35 @@
 // Public domain. https://github.com/nolanw/NWURLTemplate
 
 #import <Foundation/Foundation.h>
+
+// NS_ENUM and NS_OPTIONS were defined circa iOS 6 and OS X 10.8, so we can't count on their presence.
+#ifndef NS_ENUM
+#   define NS_ENUM(_type, _name) _type _name; enum
+#endif
+#ifndef NS_OPTIONS
+#   define NS_OPTIONS _type _name; enum
+#endif
+
+// NSArray and NSDictionary have subscripting support via ARCLite, but the compiler wasn't always happily exposing that fact.
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 40300 && __IPHONE_OS_VERSION_MAX_ALLOWED < 60000
+@interface NSArray (HTMLSubscriptingSupport)
+
+- (id)objectAtIndexedSubscript:(NSUInteger)index;
+- (void)setObject:(id)object atIndexedSubscript:(NSUInteger)index;
+
+@end
+
+@interface NSDictionary (HTMLSubscriptingSupport)
+
+- (id)objectForKeyedSubscript:(id)key;
+- (void)setObject:(id)object forKeyedSubscript:(id <NSCopying>)key;
+
+@end
+
+@interface NSOrderedSet (HTMLSubscriptingSupport)
+
+- (id)objectAtIndexedSubscript:(NSUInteger)index;
+- (void)setObject:(id)object atIndexedSubscript:(NSUInteger)index;
+
+@end
+#endif

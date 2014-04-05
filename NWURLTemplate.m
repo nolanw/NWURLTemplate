@@ -292,11 +292,12 @@ static NSURL * URLWithTemplateAndObject(NSString *template, id object, NSError *
     
     if (error) {
         if (errors.count == 1) {
-            *error = errors.firstObject;
+            *error = [errors objectAtIndex:0];
         } else if (errors.count > 1) {
-            NSError *firstError = errors.firstObject;
+            NSError *firstError = [errors objectAtIndex:0];
             NSMutableDictionary *userInfo = firstError.mutableCopy;
-            userInfo[NWURLTemplateSubsequentErrorsKey] = [errors subarrayWithRange:NSMakeRange(1, errors.count - 1)];
+            [userInfo setObject:[errors subarrayWithRange:NSMakeRange(1, errors.count - 1)]
+                         forKey:NWURLTemplateSubsequentErrorsKey];
             *error = [NSError errorWithDomain:firstError.domain code:firstError.code userInfo:userInfo];
         }
     }
