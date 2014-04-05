@@ -38,7 +38,7 @@ int main(void) { @autoreleasepool {
             id object = group[@"variables"];
             for (NSArray *test in group[@"testcases"]) {
                 NSString *template = test.firstObject;
-                totalTime += Time(5, ^{ [NWURLTemplate URLForTemplate:template withObject:object]; });
+                totalTime += Time(5, ^{ [NWURLTemplate URLForTemplate:template withObject:object error:nil]; });
             }
         }
     }

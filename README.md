@@ -10,7 +10,7 @@ An implementation of [RFC 6570 – URI Template][RFC 6570] Level 4 in Objective-
 #import "NWURLTemplate.h"
 
 id object = @{ @"tip": @"Talk loudly", @"when": @"today" };
-NSURL *URL = [NWURLTemplate URLForTemplate:@"example.org/thinger{?when,tip}" withObject:object];
+NSURL *URL = [NWURLTemplate URLForTemplate:@"example.org/thinger{?when,tip}" withObject:object error:nil];
 NSLog(@"%@", URL); // => example.org/thinger?when=today&tip=Talk%20Loudly
 ```
 

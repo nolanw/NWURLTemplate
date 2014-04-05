@@ -19,10 +19,8 @@
  * Processes a template string into a URL.
  *
  * @return The expanded URL on success, or nil if there was an error during expansion.
- *
- * @note If you're curious about the error, try -initWithString:.
  */
-+ (NSURL *)URLForTemplate:(NSString *)string withObject:(id)object;
++ (NSURL *)URLForTemplate:(NSString *)string withObject:(id)object error:(out NSError **)error;
 
 /**
  * Designated initialzer.

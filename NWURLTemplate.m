@@ -6,9 +6,9 @@
 
 @implementation NWURLTemplate
 
-+ (NSURL *)URLForTemplate:(NSString *)string withObject:(id)object
++ (NSURL *)URLForTemplate:(NSString *)string withObject:(id)object error:(NSError **)error
 {
-    return URLWithTemplateAndObject(string, object, nil);
+    return URLWithTemplateAndObject(string, object, error);
 }
 
 - (id)initWithString:(NSString *)string
