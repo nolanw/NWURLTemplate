@@ -1,0 +1,3 @@
+[submodule "Tests/uritemplate-test"]
+	path = Tests/uritemplate-test
+	url = https://github.com/uri-templates/uritemplate-test

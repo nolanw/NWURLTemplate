@@ -1,0 +1,6 @@
+// Prefix.pch
+//
+// Public domain. https://github.com/nolanw/NWURLTemplate
+
+#import <Foundation/Foundation.h>
+#import <XCTest/XCTest.h>
