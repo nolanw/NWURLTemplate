@@ -352,7 +352,7 @@ static inline BOOL ScanVariableName(NSScanner *scanner, NSString **variableName)
     NSRange badPercentEncodingRange = [candidate rangeOfString:@"%(?![0-9A-Fa-f]{2})" options:NSRegularExpressionSearch];
     if (badPercentEncodingRange.location != NSNotFound) {
         scanner.scanLocation = start + badPercentEncodingRange.location;
-        candidate = [scanner.string substringWithRange:NSMakeRange(start, scanner.scanLocation - start)];
+        candidate = [candidate substringToIndex:badPercentEncodingRange.location];
     }
     
     if (variableName) *variableName = candidate;
