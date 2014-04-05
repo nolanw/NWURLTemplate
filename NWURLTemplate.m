@@ -21,9 +21,27 @@
     return self;
 }
 
-static NSURL *URLWithTemplateAndObject(NSString *template, id object, NSError **error)
+- (NSURL *)URLWithObject:(id)object
+{
+    NSError *error;
+    NSURL *URL = URLWithTemplateAndObject(self.string, object, &error);
+    _error = error;
+    return URL;
+}
+
+static NSURL * URLWithTemplateAndObject(NSString *template, id object, NSError **error)
 {
     NSMutableString *accumulator = [NSMutableString new];
+    NSMutableArray *errors = [NSMutableArray new];
+    void (^recordError)(NSString *, NSRange) = ^(NSString *description, NSRange range) {
+        if (!error) return;
+        NSValue *boxedRange = [NSValue valueWithRange:range];
+        [errors addObject:[NSError errorWithDomain:NSCocoaErrorDomain
+                                              code:NSFormattingError
+                                          userInfo:@{ NSLocalizedDescriptionKey: description,
+                                                      NWURLTemplateErrorRangeKey: boxedRange }]];
+    };
+    
     NSScanner *scanner = [NSScanner scannerWithString:template];
     scanner.charactersToBeSkipped = nil;
     scanner.caseSensitive = YES;
@@ -36,9 +54,11 @@ static NSURL *URLWithTemplateAndObject(NSString *template, id object, NSError **
         if ([scanner scanUpToCharactersFromSet:nonliteralsCharacterSet intoString:&literal]) {
             [accumulator appendString:EscapeLiteral(literal)];
         }
+        
+        NSUInteger expressionStart = scanner.scanLocation;
         if (![scanner scanString:@"{" intoString:nil]) {
             if (!scanner.isAtEnd) {
-                if (error) *error = [NSError new];
+                recordError(@"Invalid literal character", NSMakeRange(scanner.scanLocation, 1));
             }
             break;
         }
@@ -47,7 +67,7 @@ static NSURL *URLWithTemplateAndObject(NSString *template, id object, NSError **
         [scanner scanUpToString:@"}" intoString:&expression];
         if (![scanner scanString:@"}" intoString:nil]) {
             [accumulator appendFormat:@"{%@", expression];
-            if (error) *error = [NSError new];
+            recordError(@"Expression doesn't end eith }", NSMakeRange(expressionStart, scanner.scanLocation - expressionStart));
         }
         
         NSScanner *expressionScanner = [NSScanner scannerWithString:expression];
@@ -98,11 +118,16 @@ static NSURL *URLWithTemplateAndObject(NSString *template, id object, NSError **
         
         NSUInteger definedVariables = 0;
         for (NSUInteger i = 0; ; i++) {
+            NSUInteger varspecStart = expressionScanner.scanLocation;
             NSString *variableName;
             if (!ScanVariableName(expressionScanner, &variableName)) {
                 if (i == 0 && operator == '\0') {
                     [accumulator appendFormat:@"{%@}", expression];
-                    if (error) *error = [NSError new];
+                    if (expression.length == 0) {
+                        recordError(@"Empty expression", NSMakeRange(expressionStart, 0));
+                    } else {
+                        recordError(@"Unexpected character in variable name", NSMakeRange(expressionStart, scanner.scanLocation - expressionStart));
+                    }
                     break;
                 } else if (expressionScanner.isAtEnd) {
                     break;
@@ -124,10 +149,11 @@ static NSURL *URLWithTemplateAndObject(NSString *template, id object, NSError **
                     prefixLength = [integerString integerValue];
                 }
             }
+            NSUInteger varspecEnd = expressionScanner.scanLocation;
             
             if (!([expressionScanner scanString:@"," intoString:nil] || expressionScanner.isAtEnd)) {
                 [accumulator appendFormat:@"{%@}", expression];
-                if (error) *error = [NSError new];
+                recordError(@"Expected comma or end of expression", NSMakeRange(expressionStart + expressionScanner.scanLocation, expression.length - expressionScanner.scanLocation));
                 break;
             }
             
@@ -181,7 +207,7 @@ static NSURL *URLWithTemplateAndObject(NSString *template, id object, NSError **
                 [accumulator appendString:Escape(output)];
             } else {
                 if (prefixLength != NSUIntegerMax) {
-                    if (error) *error = [NSError new];
+                    recordError(@"Prefix modifier \":\" is invalid for collections", NSMakeRange(expressionStart + varspecStart, varspecEnd - varspecStart));
                     continue;
                 }
                 
@@ -263,15 +289,19 @@ static NSURL *URLWithTemplateAndObject(NSString *template, id object, NSError **
             }
         }
     }
+    
+    if (error) {
+        if (errors.count == 1) {
+            *error = errors.firstObject;
+        } else if (errors.count > 1) {
+            NSError *firstError = errors.firstObject;
+            NSMutableDictionary *userInfo = firstError.mutableCopy;
+            userInfo[NWURLTemplateSubsequentErrorsKey] = [errors subarrayWithRange:NSMakeRange(1, errors.count - 1)];
+            *error = [NSError errorWithDomain:firstError.domain code:firstError.code userInfo:userInfo];
+        }
+    }
+    
     return [NSURL URLWithString:accumulator];
-}
-
-- (NSURL *)URLWithObject:(id)object
-{
-    NSError *error;
-    NSURL *URL = URLWithTemplateAndObject(self.string, object, &error);
-    _error = error;
-    return URL;
 }
 
 static inline NSString * EscapeLiteral(NSString *string)
@@ -344,3 +374,5 @@ static inline NSCharacterSet * VarnameCharacterSet(void)
 @end
 
 NSString * const NWURLTemplateErrorRangeKey = @"Template error range";
+
+NSString * const NWURLTemplateSubsequentErrorsKey = @"Subsequent errors";
