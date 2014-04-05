@@ -8,8 +8,7 @@
 
 + (NSURL *)URLForTemplate:(NSString *)string withObject:(id)object
 {
-    NWURLTemplate *template = [[self alloc] initWithString:string];
-    return [template URLWithObject:object];
+    return URLWithTemplateAndObject(string, object, nil);
 }
 
 - (id)initWithString:(NSString *)string
@@ -22,21 +21,24 @@
     return self;
 }
 
-- (NSURL *)URLWithObject:(id)object
+static NSURL *URLWithTemplateAndObject(NSString *template, id object, NSError **error)
 {
     NSMutableString *accumulator = [NSMutableString new];
-    NSScanner *scanner = [NSScanner scannerWithString:self.string];
+    NSScanner *scanner = [NSScanner scannerWithString:template];
     scanner.charactersToBeSkipped = nil;
     scanner.caseSensitive = YES;
     NSCharacterSet *nonliteralsCharacterSet = NonliteralsCharacterSet();
     for (;;) {
+        
+        // Scanning up to a nonliteral ended up being much faster than scanning literals.
+        // TODO This does not check for improper percent-encodings (i.e. 0-1 hex digits after a %).
         NSString *literal;
         if ([scanner scanUpToCharactersFromSet:nonliteralsCharacterSet intoString:&literal]) {
             [accumulator appendString:EscapeLiteral(literal)];
         }
         if (![scanner scanString:@"{" intoString:nil]) {
             if (!scanner.isAtEnd) {
-                _error = [NSError new];
+                if (error) *error = [NSError new];
             }
             break;
         }
@@ -45,13 +47,15 @@
         [scanner scanUpToString:@"}" intoString:&expression];
         if (![scanner scanString:@"}" intoString:nil]) {
             [accumulator appendFormat:@"{%@", expression];
-            _error = [NSError new];
+            if (error) *error = [NSError new];
         }
+        
         NSScanner *expressionScanner = [NSScanner scannerWithString:expression];
         expressionScanner.charactersToBeSkipped = nil;
         expressionScanner.caseSensitive = YES;
         unichar operator = '\0';
         ScanOperator(expressionScanner, &operator);
+        
         NSString *first = @"";
         NSString *separator = @",";
         NSString *ifEmpty = @"";
@@ -98,12 +102,13 @@
             if (!ScanVariableName(expressionScanner, &variableName)) {
                 if (i == 0 && operator == '\0') {
                     [accumulator appendFormat:@"{%@}", expression];
-                    _error = [NSError new];
+                    if (error) *error = [NSError new];
                     break;
                 } else if (expressionScanner.isAtEnd) {
                     break;
                 }
             }
+            
             BOOL explode = NO;
             NSUInteger prefixLength = NSUIntegerMax;
             if ([expressionScanner scanString:@"*" intoString:nil]) {
@@ -119,32 +124,46 @@
                     prefixLength = [integerString integerValue];
                 }
             }
+            
             if (!([expressionScanner scanString:@"," intoString:nil] || expressionScanner.isAtEnd)) {
                 [accumulator appendFormat:@"{%@}", expression];
-                _error = [NSError new];
+                if (error) *error = [NSError new];
                 break;
             }
             
             id value;
             @try {
-                // NSDictionary returns nil for invalid key paths. Most everything else throws an NSUnknownKeyException.
+                
+                // NSDictionary returns nil for invalid key paths, but we want NSNull to indicate undefined variables.
                 value = [object valueForKeyPath:variableName] ?: [NSNull null];
             } @catch (id _) {
-                value = [NSNull null];
+                
+                // Most everything else throws an NSUnknownKeyException for invalid key paths. We'll make a final try by interpreting a key path as just a key.
+                @try {
+                    
+                    // Default to NSNull again for NSDictionary.
+                    value = [object valueForKey:variableName] ?: [NSNull null];
+                } @catch (id _) {
+                    value = [NSNull null];
+                }
             }
             BOOL isCollection = [value conformsToProtocol:@protocol(NSFastEnumeration)] && [value respondsToSelector:@selector(count)];
+            
+            // The spec treats an empty collection as if the variable was undefined.
             if ([[NSNull null] isEqual:value] || (isCollection && [value count] == 0)) continue;
             
+            // The only non-collection we handle is a string, so make sure we got a string.
             if (!isCollection) {
                 value = [value description];
             }
-            BOOL isDictionary = isCollection && [value isKindOfClass:[NSDictionary class]];
+            
             definedVariables++;
             if (definedVariables == 1) {
                 [accumulator appendString:first];
             } else {
                 [accumulator appendString:separator];
             }
+            
             if ([value isKindOfClass:[NSString class]]) {
                 if (named) {
                     [accumulator appendString:EscapeLiteral(variableName)];
@@ -162,9 +181,11 @@
                 [accumulator appendString:Escape(output)];
             } else {
                 if (prefixLength != NSUIntegerMax) {
-                    _error = [NSError new];
+                    if (error) *error = [NSError new];
                     continue;
                 }
+                
+                BOOL isDictionary = isCollection && [value isKindOfClass:[NSDictionary class]];
                 if (!explode) {
                     if (named) {
                         [accumulator appendString:EscapeLiteral(variableName)];
@@ -245,6 +266,14 @@
     return [NSURL URLWithString:accumulator];
 }
 
+- (NSURL *)URLWithObject:(id)object
+{
+    NSError *error;
+    NSURL *URL = URLWithTemplateAndObject(self.string, object, &error);
+    _error = error;
+    return URL;
+}
+
 static inline NSString * EscapeLiteral(NSString *string)
 {
     string = [string stringByReplacingOccurrencesOfString:@"%(?![0-9A-Fa-f]{2})" withString:@"%25" options:NSRegularExpressionSearch range:NSMakeRange(0, string.length)];
@@ -314,4 +343,4 @@ static inline NSCharacterSet * VarnameCharacterSet(void)
 
 @end
 
-NSString * const NWURLTemplateRangeKey = @"Range";
+NSString * const NWURLTemplateErrorRangeKey = @"Template error range";
