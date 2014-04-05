@@ -3,12 +3,12 @@ before_install:
   - brew update
   - brew install xctool || brew upgrade xctool
 env:
-  - TEST_SDK=iphonesimulator7.0
-  - TEST_SDK=iphonesimulator6.1 TEST_ACTION=build
-  - TEST_SDK=iphonesimulator5.1 TEST_ACTION=build
-  - TEST_SDK=macosx10.9 TEST_SCHEME=OSX
-  - TEST_SDK=macosx10.8 TEST_SCHEME=OSX
-script: xctool -project Tests/NWURLTemplate.xcodeproj -scheme "Tests-${TEST_SCHEME:-iOS}" -sdk $TEST_SDK ${TEST_ACTION:-test}
+  - TEST_SDK=iphonesimulator7.0 TEST_SCHEME=Tests-iOS
+  - TEST_SDK=iphonesimulator6.1 TEST_ACTION=build TEST_SCHEME=Test-iOS-build
+  - TEST_SDK=iphonesimulator5.1 TEST_ACTION=build TEST_SCHEME=Test-iOS-build
+  - TEST_SDK=macosx10.9
+  - TEST_SDK=macosx10.8
+script: xctool -project Tests/NWURLTemplate.xcodeproj -scheme "${TEST_SCHEME:-Tests-OSX}" -sdk $TEST_SDK ${TEST_ACTION:-test}
 notifications:
   email:
     - nolan@nolanw.ca

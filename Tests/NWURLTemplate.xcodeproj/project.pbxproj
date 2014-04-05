@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1CB5DB1418EFA475008FBFA5 /* Profiler.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CB5DB1318EFA475008FBFA5 /* Profiler.m */; };
 		1CB5DB1C18EFA505008FBFA5 /* NWURLTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CF1906A18EDEEE900B2A5D7 /* NWURLTemplate.m */; };
+		1CB5DB4F18F091F0008FBFA5 /* NWURLTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CF1906A18EDEEE900B2A5D7 /* NWURLTemplate.m */; };
 		1CF1907318EDF15100B2A5D7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF1907218EDF15100B2A5D7 /* XCTest.framework */; };
 		1CF1908418EDF17100B2A5D7 /* NWURLTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CF1906A18EDEEE900B2A5D7 /* NWURLTemplate.m */; };
 		1CF1908A18EDF19000B2A5D7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF1907218EDF15100B2A5D7 /* XCTest.framework */; };
@@ -31,11 +32,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		1CB5DB2918F091A1008FBFA5 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1CB5DB1018EFA475008FBFA5 /* Profiler */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Profiler; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CB5DB1318EFA475008FBFA5 /* Profiler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Profiler.m; sourceTree = "<group>"; };
+		1CB5DB2B18F091A1008FBFA5 /* libTest-iOS-build.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libTest-iOS-build.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1CB5DB2C18F091A1008FBFA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1CF1906918EDEEE900B2A5D7 /* NWURLTemplate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NWURLTemplate.h; path = ../NWURLTemplate.h; sourceTree = "<group>"; };
 		1CF1906A18EDEEE900B2A5D7 /* NWURLTemplate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NWURLTemplate.m; path = ../NWURLTemplate.m; sourceTree = "<group>"; };
 		1CF1906F18EDF15100B2A5D7 /* Tests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -50,6 +62,13 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		1CB5DB0D18EFA475008FBFA5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1CB5DB2818F091A1008FBFA5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -92,6 +111,7 @@
 				1CF1906F18EDF15100B2A5D7 /* Tests-iOS.xctest */,
 				1CF1908918EDF19000B2A5D7 /* Tests-OSX.xctest */,
 				1CB5DB1018EFA475008FBFA5 /* Profiler */,
+				1CB5DB2B18F091A1008FBFA5 /* libTest-iOS-build.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -99,6 +119,7 @@
 		1CF1907118EDF15100B2A5D7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1CB5DB2C18F091A1008FBFA5 /* Foundation.framework */,
 				1CF1907218EDF15100B2A5D7 /* XCTest.framework */,
 			);
 			name = Frameworks;
@@ -144,6 +165,23 @@
 			productName = Profiler;
 			productReference = 1CB5DB1018EFA475008FBFA5 /* Profiler */;
 			productType = "com.apple.product-type.tool";
+		};
+		1CB5DB2A18F091A1008FBFA5 /* Test-iOS-build */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1CB5DB4918F091A2008FBFA5 /* Build configuration list for PBXNativeTarget "Test-iOS-build" */;
+			buildPhases = (
+				1CB5DB2718F091A1008FBFA5 /* Sources */,
+				1CB5DB2818F091A1008FBFA5 /* Frameworks */,
+				1CB5DB2918F091A1008FBFA5 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Test-iOS-build";
+			productName = "Test-iOS-build";
+			productReference = 1CB5DB2B18F091A1008FBFA5 /* libTest-iOS-build.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 		1CF1906E18EDF15100B2A5D7 /* Tests-iOS */ = {
 			isa = PBXNativeTarget;
@@ -202,6 +240,7 @@
 				1CF1906E18EDF15100B2A5D7 /* Tests-iOS */,
 				1CF1908818EDF19000B2A5D7 /* Tests-OSX */,
 				1CB5DB0F18EFA475008FBFA5 /* Profiler */,
+				1CB5DB2A18F091A1008FBFA5 /* Test-iOS-build */,
 			);
 		};
 /* End PBXProject section */
@@ -230,6 +269,14 @@
 			files = (
 				1CB5DB1C18EFA505008FBFA5 /* NWURLTemplate.m in Sources */,
 				1CB5DB1418EFA475008FBFA5 /* Profiler.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1CB5DB2718F091A1008FBFA5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CB5DB4F18F091F0008FBFA5 /* NWURLTemplate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,6 +384,82 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		1CB5DB4A18F091A2008FBFA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/Test_iOS_build.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Support/Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		1CB5DB4B18F091A2008FBFA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DSTROOT = /tmp/Test_iOS_build.dst;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Support/Prefix.pch;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -551,6 +674,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		1CB5DB4918F091A2008FBFA5 /* Build configuration list for PBXNativeTarget "Test-iOS-build" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1CB5DB4A18F091A2008FBFA5 /* Debug */,
+				1CB5DB4B18F091A2008FBFA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		1CF1906618EDEEB700B2A5D7 /* Build configuration list for PBXProject "NWURLTemplate" */ = {
 			isa = XCConfigurationList;
