@@ -11,7 +11,7 @@ An implementation of [RFC 6570 – URI Template][RFC 6570] Level 4 in Objective-
 
 id object = @{ @"tip": @"Talk loudly", @"when": @"today" };
 NSURL *URL = [NWURLTemplate URLForTemplate:@"example.org/thinger{?when,tip}" withObject:object error:nil];
-NSLog(@"%@", URL); // => example.org/thinger?when=today&tip=Talk%20Loudly
+NSLog(@"%@", URL); // => example.org/thinger?when=today&tip=Talk%20loudly
 ```
 
 ## Why
