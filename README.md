@@ -41,4 +41,6 @@ NWURLTemplate continuously runs all [URI Template Tests][] on iOS 7 and OS X ver
 
 The tests are transformed by [a script](Tests/Support/transform-tests.rb) into XCTest test cases, with the [resulting](Tests/TestExamples.m) [test](Tests/TestExtended.m) [classes](Tests/TestNegative.m) included in this repository. The URI Template Tests are included as a submodule but are not necessary for running tests. If you do pull updated tests from the URI Template Tests repository, update the submodule then run the transformation script.
 
+There is a Profiler target in the Xcode project. It builds a command-line application for testing the library's execution speed. The absolute numbers are probably fairly pointless, but comparing numbers before and after changes or running under Instruments may prove fruitful.
+
 [URI Template Tests]: https://github.com/uri-templates/uritemplate-test

@@ -28,9 +28,10 @@
     NSScanner *scanner = [NSScanner scannerWithString:self.string];
     scanner.charactersToBeSkipped = nil;
     scanner.caseSensitive = YES;
+    NSCharacterSet *nonliteralsCharacterSet = NonliteralsCharacterSet();
     for (;;) {
         NSString *literal;
-        if ([scanner scanCharactersFromSet:LiteralsCharacterSet() intoString:&literal]) {
+        if ([scanner scanUpToCharactersFromSet:nonliteralsCharacterSet intoString:&literal]) {
             [accumulator appendString:EscapeLiteral(literal)];
         }
         if (![scanner scanString:@"{" intoString:nil]) {
@@ -131,13 +132,14 @@
             } @catch (id _) {
                 value = [NSNull null];
             }
-            if ([[NSNull null] isEqual:value]) continue;
-            BOOL isDictionary = [value isKindOfClass:[NSDictionary class]];
-            if (!([value conformsToProtocol:@protocol(NSFastEnumeration)] && [value respondsToSelector:@selector(count)])) {
+            BOOL isCollection = [value conformsToProtocol:@protocol(NSFastEnumeration)] && [value respondsToSelector:@selector(count)];
+            if ([[NSNull null] isEqual:value] || (isCollection && [value count] == 0)) continue;
+            
+            if (!isCollection) {
                 value = [value description];
             }
+            BOOL isDictionary = isCollection && [value isKindOfClass:[NSDictionary class]];
             definedVariables++;
-            
             if (definedVariables == 1) {
                 [accumulator appendString:first];
             } else {
@@ -298,11 +300,11 @@ static inline BOOL ScanVariableName(NSScanner *scanner, NSString **variableName)
     return YES;
 }
 
-static inline NSCharacterSet * LiteralsCharacterSet(void)
+static inline NSCharacterSet * NonliteralsCharacterSet(void)
 {
     NSMutableCharacterSet *nonliterals = [NSMutableCharacterSet controlCharacterSet];
     [nonliterals addCharactersInString:@" \"'%<>\\^`{|}"];
-    return [nonliterals invertedSet];
+    return [nonliterals copy];
 }
 
 static inline NSCharacterSet * VarnameCharacterSet(void)
